@@ -140,24 +140,27 @@ export const skills = {
 export const experience = [
   {
     id: 1,
-    title: "Full Stack Development",
-    description: "Building modern web applications with focus on user experience and performance",
+    title: "Full Stack Developer - Khan Familia Travels",
+    description: "Developed and deployed a comprehensive travel booking platform with AI-powered features",
     period: "2024 - Present",
     highlights: [
-      "Developed multiple full-stack applications",
-      "Implemented RESTful APIs and database solutions",
-      "Focus on modern frameworks and best practices"
+      "Built scalable MERN stack application for travel bookings",
+      "Integrated AI tour planner for personalized itineraries",
+      "Implemented hotel, restaurant, and transportation booking systems",
+      "Designed interactive map routes with real-time destinations",
+      "Delivered production-ready application serving real customers"
     ]
   },
   {
     id: 2,
-    title: "CS Student",
-    description: "Pursuing Computer Science education with hands-on project experience",
-    period: "2023 - Present",
+    title: "Computer Science Student - University of Swat",
+    description: "Pursuing Bachelor's degree in Computer Science with focus on web development",
+    period: "2022 - Present",
     highlights: [
       "Strong foundation in algorithms and data structures",
-      "Active GitHub contributor",
-      "Continuous learning of new technologies"
+      "Active GitHub contributor with multiple projects",
+      "Specialized in modern web technologies and frameworks",
+      "Hands-on experience with real-world applications"
     ]
   }
 ];
