@@ -71,7 +71,7 @@ export const projects = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     title: "Todo App with Next.js",
     slug: "todo-nextjs",
     description: "Modern todo application built with Next.js 15 and TypeScript. Features type-safe code, server components, and optimized performance.",
@@ -80,7 +80,7 @@ export const projects = [
     category: "Frontend",
     github: "https://github.com/hamdanahmadkhan101-tech/todo-nextjs",
     featured: true,
-    accentColor: "#00FF88",
+    accentColor: "#FF6B6B",
     image: null,
     status: "Active",
     year: 2025,
@@ -92,19 +92,19 @@ export const projects = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     title: "Currency Exchange App",
-    slug: "Currency-Exchange-App",
+    slug: "currency-exchange-app",
     description: "Real-time currency converter using live exchange rates. Clean vanilla JavaScript implementation with API integration.",
     longDescription: "Currency conversion application that fetches real-time exchange rates from external APIs. Features currency selection, conversion calculations, and a clean, user-friendly interface built with vanilla JavaScript.",
     tech: ["JavaScript", "HTML", "CSS", "REST API"],
     category: "Frontend",
     github: "https://github.com/hamdanahmadkhan101-tech/Currency-Exchange-App",
-    featured: true,
-    accentColor: "#FF6B6B",
+    featured: false,
+    accentColor: "#FFB800",
     image: null,
     status: "Complete",
-    year: 2025,
+    year: 2024,
     highlights: [
       "Real-time currency conversion",
       "API integration for live rates",
