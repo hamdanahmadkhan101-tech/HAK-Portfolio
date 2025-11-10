@@ -4,16 +4,24 @@ export const profileData = {
   name: "Hamdan Ahmad Khan",
   username: "hamdanahmadkhan101-tech",
   title: "Full Stack Developer",
-  bio: "CS student passionate about building modern web applications with cutting-edge technologies. Focused on creating intuitive user experiences and scalable backend solutions.",
-  location: "Pakistan",
-  email: "contact@hamdankhan.dev",
+  bio: "24-year-old Computer Science student from University of Swat, passionate about building modern, scalable web applications. Experienced in MERN stack development with a focus on creating intuitive user experiences and real-world solutions.",
+  location: "Odigram Swat, KPK, Pakistan",
+  email: "hamdanahmadkhan101@gmail.com",
+  phone: "03447230306",
   github: "https://github.com/hamdanahmadkhan101-tech",
-  linkedin: "https://linkedin.com/in/hamdankhan",
+  linkedin: "https://www.linkedin.com/in/hamdan-ahmad-khan-a48407384",
   avatar: "https://avatars.githubusercontent.com/u/222951084?v=4",
+  age: 24,
   totalRepos: 12,
   followers: 0,
   following: 1,
-  contributions: 44
+  contributions: 44,
+  education: {
+    institution: "University of Swat",
+    degree: "Bachelor of Computer Science",
+    startYear: 2022,
+    status: "In Progress"
+  }
 };
 
 export const projects = [
