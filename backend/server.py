@@ -17,12 +17,16 @@ load_dotenv(ROOT_DIR / '.env')
 from routes import profile, projects, skills, contact, stats, experience
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+from database import get_db, close_db
 
 # Create the main app without a prefix
 app = FastAPI(title="Hamdan's Portfolio API", version="1.0.0")
+
+# Initialize database on startup
+@app.on_event("startup")
+async def startup_db_client():
+    """Initialize database connection on startup"""
+    get_db()
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -64,4 +68,4 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    close_db()

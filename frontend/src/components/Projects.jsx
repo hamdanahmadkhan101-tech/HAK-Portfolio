@@ -1,144 +1,136 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink, Code2, Calendar, Zap } from 'lucide-react';
-import { projects } from '../utils/mockData';
+import { motion } from 'framer-motion';
+import { ExternalLink, Github, Code, Filter } from 'lucide-react';
 
-const Projects = () => {
-  const [filter, setFilter] = useState('All');
-  const categories = ['All', 'Full Stack', 'Frontend', 'Backend'];
+const Projects = ({ projects }) => {
+  const [filter, setFilter] = useState('all');
 
-  const filteredProjects = filter === 'All'
-    ? projects
+  if (!projects || projects.length === 0) return null;
+
+  const categories = ['all', ...new Set(projects.map(p => p.category))];
+  const filteredProjects = filter === 'all' 
+    ? projects 
     : projects.filter(p => p.category === filter);
 
   return (
-    <section id="projects" className="py-20 bg-[#0a0a0a] relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00D9FF] to-transparent opacity-50"></div>
-
-      <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <div className="inline-block mb-4">
-            <div className="flex items-center gap-3 px-6 py-2 rounded-full border border-[#00D9FF]/30 bg-[#00D9FF]/5">
-              <Code2 size={20} className="text-[#00D9FF]" />
-              <span className="text-[#00D9FF] font-semibold tracking-wide">FEATURED WORK</span>
-            </div>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Projects <span className="text-[#00D9FF]">Showcase</span>
+    <section id="projects" className="py-20 bg-background">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            My Projects
           </h2>
-          <p className="text-xl text-gray-400">
-            A collection of my recent work and experiments
+          <div className="w-24 h-1 bg-accent mx-auto mb-8"></div>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Here are some of my recent projects that showcase my skills and experience.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map(cat => (
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {categories.map((category) => (
             <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                filter === cat
-                  ? 'bg-[#00D9FF] text-black shadow-lg shadow-[#00D9FF]/50 scale-105'
-                  : 'bg-[#1a1a1a] text-gray-400 hover:text-white border border-gray-700 hover:border-[#00D9FF]'
+              key={category}
+              onClick={() => setFilter(category)}
+              className={`px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
+                filter === category
+                  ? 'bg-accent text-accent-foreground shadow-lg'
+                  : 'bg-card text-card-foreground hover:bg-muted shadow-md border border-border'
               }`}
             >
-              {cat}
+              {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
           ))}
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
-            <div
+            <motion.div
               key={project.id}
-              className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-gray-800 hover:border-[#00D9FF]/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-[#00D9FF]/20"
-              style={{ animationDelay: `${index * 100}ms` }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-card rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-border hover:border-accent/30"
             >
-              {/* Accent Bar */}
-              <div
-                className="absolute top-0 left-0 w-full h-1"
-                style={{ backgroundColor: project.accentColor }}
-              ></div>
-
-              {/* Status Badge */}
-              <div className="absolute top-4 right-4 z-10">
-                <div
-                  className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm"
-                  style={{
-                    backgroundColor: `${project.accentColor}20`,
-                    color: project.accentColor,
-                    border: `1px solid ${project.accentColor}40`
-                  }}
-                >
-                  <Zap size={12} />
-                  {project.status}
+              {/* Project Image/Placeholder */}
+              <div className="h-48 bg-muted relative overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Code className="w-16 h-16 text-white opacity-50" />
                 </div>
+                {project.featured && (
+                  <div className="absolute top-4 right-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                    Featured
+                  </div>
+                )}
               </div>
 
-              {/* Content */}
-              <div className="p-8">
-                {/* Year */}
-                <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
-                  <Calendar size={14} />
-                  <span>{project.year}</span>
+              {/* Project Content */}
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="text-xl font-bold text-card-foreground group-hover:text-accent transition-colors">
+                    {project.title}
+                  </h3>
+                  <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                    {project.status}
+                  </span>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#00D9FF] transition-colors">
-                  {project.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-400 mb-6 leading-relaxed">
+                <p className="text-muted-foreground mb-4 line-clamp-2">
                   {project.description}
                 </p>
 
                 {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech, idx) => (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tech.slice(0, 3).map((tech, i) => (
                     <span
-                      key={idx}
-                      className="px-3 py-1 bg-[#0a0a0a] text-gray-300 text-xs rounded-full border border-gray-700 hover:border-[#00D9FF] transition-colors"
+                      key={i}
+                      className="text-xs bg-accent/10 text-accent px-2 py-1 rounded border border-accent/20"
                     >
                       {tech}
                     </span>
                   ))}
+                  {project.tech.length > 3 && (
+                    <span className="text-xs text-muted-foreground">+{project.tech.length - 3} more</span>
+                  )}
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-3">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#0a0a0a] text-white rounded-lg border border-gray-700 hover:border-[#00D9FF] hover:text-[#00D9FF] transition-all duration-300 group/btn"
-                  >
-                    <Github size={18} className="group-hover/btn:rotate-12 transition-transform" />
-                    <span className="font-semibold">Code</span>
-                  </a>
-                  <button
-                    className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-gray-700 hover:border-[#00FF88] text-gray-400 hover:text-[#00FF88] transition-all duration-300 group/btn"
-                    style={{
-                      borderColor: `${project.accentColor}40`,
-                      color: project.accentColor
-                    }}
-                  >
-                    <ExternalLink size={18} className="group-hover/btn:scale-110 transition-transform" />
-                  </button>
+                <div className="flex items-center gap-4">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Github size={18} />
+                      <span className="text-sm">Code</span>
+                    </a>
+                  )}
+                  {project.live_url && (
+                    <a
+                      href={project.live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-muted-foreground hover:text-secondary transition-colors"
+                    >
+                      <ExternalLink size={18} />
+                      <span className="text-sm">Live</span>
+                    </a>
+                  )}
+                  {!project.github && !project.live_url && (
+                    <span className="text-sm text-muted-foreground">Private Repository</span>
+                  )}
                 </div>
               </div>
-
-              {/* Hover Effect Overlay */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{
-                  background: `radial-gradient(circle at center, ${project.accentColor}10 0%, transparent 70%)`
-                }}
-              ></div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -147,3 +139,4 @@ const Projects = () => {
 };
 
 export default Projects;
+

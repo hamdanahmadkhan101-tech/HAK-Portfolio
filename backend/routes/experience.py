@@ -11,14 +11,16 @@ experience_data = [
     Experience(
         id=1,
         title="Full Stack Developer - Khan Familia Travels",
-        description="Developed and deployed a comprehensive travel booking platform with AI-powered features",
+        description="Modern, scalable travel booking platform for Khan Familia Travels (KFT) featuring AI-powered tour planning, hotel/restaurant bookings, and comprehensive transportation services. Currently in development phase, architecting an enterprise-grade solution that will revolutionize the travel booking experience with cutting-edge technology and user-centric design.",
         period="2024 - Present",
         highlights=[
-            "Built scalable MERN stack application for travel bookings",
-            "Integrated AI tour planner for personalized itineraries",
-            "Implemented hotel, restaurant, and transportation booking systems",
-            "Designed interactive map routes with real-time destinations",
-            "Delivered production-ready application serving real customers"
+            "Designing and developing scalable MERN stack application for multiple booking services",
+            "Planning AI-powered tour planner integration for personalized tourist itineraries",
+            "Building comprehensive booking systems for hotels, restaurants, and transportation",
+            "Implementing interactive map integration with real-time route planning features",
+            "Establishing robust API architecture for future scalability and integrations",
+            "Focusing on performance optimization and user experience design",
+            "Preparing production-ready deployment infrastructure"
         ]
     ),
     Experience(

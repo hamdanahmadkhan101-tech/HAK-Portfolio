@@ -1,22 +1,36 @@
 from fastapi import APIRouter, HTTPException
-from motor.motor_asyncio import AsyncIOMotorClient
 from models import ContactMessage, ContactMessageCreate
 from email_service import email_service
-import os
+from database import get_db
 import logging
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# Get database instance
+db = get_db()
 
 @router.post("/contact", response_model=ContactMessage)
 async def submit_contact_form(message_data: ContactMessageCreate):
     """Submit contact form - saves to DB and sends email notification"""
     try:
+        # Check for recent duplicate submissions (within last 5 minutes)
+        from datetime import datetime, timedelta
+        five_minutes_ago = datetime.utcnow() - timedelta(minutes=5)
+        
+        existing_message = await db.contact_messages.find_one({
+            "email": message_data.email,
+            "subject": message_data.subject,
+            "message": message_data.message,
+            "created_at": {"$gte": five_minutes_ago}
+        })
+        
+        if existing_message:
+            raise HTTPException(
+                status_code=429, 
+                detail="Duplicate submission detected. Please wait before sending another message."
+            )
+        
         # Create contact message object
         contact_message = ContactMessage(
             name=message_data.name,

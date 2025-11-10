@@ -45,7 +45,7 @@ projects_data = [
         featured=True,
         accent_color="#00FF88",
         image=None,
-        status="Active",
+        status="Complete",
         year=2025,
         highlights=[
             "CRUD operations for task management",
@@ -67,7 +67,7 @@ projects_data = [
         featured=True,
         accent_color="#FF6B6B",
         image=None,
-        status="Active",
+        status="Complete",
         year=2025,
         highlights=[
             "Built with Next.js 15 App Router",

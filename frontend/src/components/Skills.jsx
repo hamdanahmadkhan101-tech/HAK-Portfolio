@@ -1,106 +1,74 @@
 import React from 'react';
-import { Code, Server, Wrench, TrendingUp } from 'lucide-react';
-import { skills } from '../utils/mockData';
+import { motion } from 'framer-motion';
+import { Code, Server, Wrench } from 'lucide-react';
 
-const Skills = () => {
-  const skillCategories = [
-    {
-      title: 'Frontend',
-      icon: Code,
-      skills: skills.frontend,
-      color: '#00D9FF'
-    },
-    {
-      title: 'Backend',
-      icon: Server,
-      skills: skills.backend,
-      color: '#00FF88'
-    },
-    {
-      title: 'Tools & Others',
-      icon: Wrench,
-      skills: skills.tools,
-      color: '#FF6B6B'
-    }
-  ];
+const Skills = ({ skills }) => {
+  if (!skills || skills.length === 0) return null;
+
+  const categoryIcons = {
+    Frontend: Code,
+    Backend: Server,
+    'Tools & Others': Wrench,
+  };
 
   return (
-    <section className="py-20 bg-[#1a1a1a] relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#00D9FF] opacity-5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00FF88] opacity-5 rounded-full blur-3xl"></div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <div className="inline-block mb-4">
-            <div className="flex items-center gap-3 px-6 py-2 rounded-full border border-[#00FF88]/30 bg-[#00FF88]/5">
-              <TrendingUp size={20} className="text-[#00FF88]" />
-              <span className="text-[#00FF88] font-semibold tracking-wide">TECHNICAL EXPERTISE</span>
-            </div>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Skills & <span className="text-[#00FF88]">Technologies</span>
+    <section id="skills" className="py-20 bg-muted/30">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Skills & Technologies
           </h2>
-          <p className="text-xl text-gray-400">
-            Tools and technologies I work with on a daily basis
+          <div className="w-24 h-1 bg-accent mx-auto mb-8"></div>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Technologies and tools I use to bring ideas to life.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {skillCategories.map((category, catIndex) => {
-            const Icon = category.icon;
+        <div className="grid md:grid-cols-3 gap-8">
+          {skills.map((skillCategory, categoryIndex) => {
+            const IconComponent = categoryIcons[skillCategory.category] || Code;
             return (
-              <div
-                key={category.title}
-                className="bg-[#0a0a0a] rounded-2xl p-8 border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-105"
-                style={{ animationDelay: `${catIndex * 100}ms` }}
+              <motion.div
+                key={categoryIndex}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: categoryIndex * 0.2 }}
+                className="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-border hover:border-primary/30"
               >
-                {/* Category Header */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div
-                    className="p-3 rounded-xl"
-                    style={{
-                      backgroundColor: `${category.color}20`,
-                      color: category.color
-                    }}
-                  >
-                    <Icon size={28} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white">{category.title}</h3>
+                <div className="flex items-center gap-3 mb-6">
+                  <IconComponent className="w-6 h-6 text-accent" />
+                  <h3 className="text-2xl font-bold text-card-foreground">
+                    {skillCategory.category}
+                  </h3>
                 </div>
 
-                {/* Skills List */}
-                <div className="space-y-6">
-                  {category.skills.map((skill, idx) => (
-                    <div key={idx} className="group">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-300 font-medium group-hover:text-white transition-colors">
-                          {skill.name}
-                        </span>
-                        <span
-                          className="text-sm font-semibold"
-                          style={{ color: category.color }}
-                        >
-                          {skill.level}%
-                        </span>
+                <div className="space-y-4">
+                  {skillCategory.skills.map((skill, skillIndex) => (
+                    <div key={skillIndex}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-card-foreground font-medium">{skill.name}</span>
+                        <span className="text-sm text-muted-foreground">{skill.level}%</span>
                       </div>
-                      {/* Progress Bar */}
-                      <div className="h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-1000 ease-out"
-                          style={{
-                            width: `${skill.level}%`,
-                            backgroundColor: category.color,
-                            boxShadow: `0 0 10px ${category.color}40`
-                          }}
-                        ></div>
+                      <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1.2, delay: skillIndex * 0.1, ease: "easeOut" }}
+                          className="skill-progress h-3 rounded-full"
+                        />
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -110,3 +78,4 @@ const Skills = () => {
 };
 
 export default Skills;
+

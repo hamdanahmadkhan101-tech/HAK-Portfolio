@@ -1,123 +1,99 @@
 import React from 'react';
-import { Github, Linkedin, Mail, ArrowDown, Code2 } from 'lucide-react';
-import { profileData } from '../utils/mockData';
+import { Download, Mail, MapPin, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const Hero = () => {
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
+const Hero = ({ profile }) => {
+  if (!profile) return null;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0a0a0a] to-[#1a1a1a]">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#00D9FF] opacity-10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00FF88] opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#FF6B6B] opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
+    <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-20">
+      <div className="container mx-auto px-4 py-20">
+        <div className="flex flex-col md:flex-row items-center gap-12">
+          {/* Avatar and Basic Info */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex-shrink-0"
+          >
+            <div className="relative">
+              <img
+                src={profile.avatar || 'https://via.placeholder.com/300'}
+                alt={profile.name}
+                className="w-64 h-64 rounded-full object-cover border-4 border-white shadow-2xl"
+              />
+              <div className="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-white"></div>
+            </div>
+          </motion.div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Avatar with glow */}
-          <div className="mb-8 inline-block relative">
-            <div className="absolute inset-0 bg-[#00D9FF] opacity-50 blur-2xl rounded-full"></div>
-            <img
-              src={profileData.avatar}
-              alt={profileData.name}
-              className="w-32 h-32 rounded-full border-4 border-[#00D9FF] relative z-10 hover:scale-110 transition-transform duration-300"
-            />
-          </div>
-
-          {/* Name with gradient text */}
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-tight">
-            <span className="inline-block hover:scale-105 transition-transform duration-300">
-              <span className="text-white">{profileData.name.split(' ')[0]}</span>
-              {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#00FF88]">
-                {profileData.name.split(' ').slice(1).join(' ')}
-              </span>
-            </span>
-          </h1>
-
-          {/* Title */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#00D9FF]"></div>
-            <p className="text-2xl md:text-3xl text-[#00D9FF] font-light tracking-wide">
-              {profileData.title}
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex-1 text-center md:text-left"
+          >
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+              {profile.name}
+            </h1>
+            <p className="text-2xl md:text-3xl text-blue-600 mb-6 font-semibold">
+              {profile.title}
             </p>
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#00D9FF]"></div>
-          </div>
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+              {profile.bio}
+            </p>
 
-          {/* Bio */}
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-            {profileData.bio}
-          </p>
+            {/* Stats */}
+            <div className="flex flex-wrap gap-6 mb-8 justify-center md:justify-start">
+              <div className="flex items-center gap-2 text-gray-700">
+                <MapPin size={20} className="text-blue-600" />
+                <span>{profile.location}</span>
+              </div>
+              <div className="flex items-center gap-2 text-gray-700">
+                <Calendar size={20} className="text-blue-600" />
+                <span>Age {profile.age}</span>
+              </div>
+              {profile.email && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Mail size={20} className="text-blue-600" />
+                  <span>{profile.email}</span>
+                </div>
+              )}
+            </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-            <a
-              href={profileData.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group px-8 py-4 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00b8d4] transition-all duration-300 flex items-center gap-2 hover:scale-105 hover:shadow-lg hover:shadow-[#00D9FF]/50"
-            >
-              <Github size={20} className="group-hover:rotate-12 transition-transform" />
-              View GitHub
-            </a>
-            <a
-              href={`mailto:${profileData.email}`}
-              className="group px-8 py-4 bg-transparent border-2 border-[#00FF88] text-[#00FF88] font-semibold rounded-lg hover:bg-[#00FF88] hover:text-black transition-all duration-300 flex items-center gap-2 hover:scale-105 hover:shadow-lg hover:shadow-[#00FF88]/50"
-            >
-              <Mail size={20} className="group-hover:scale-110 transition-transform" />
-              Get In Touch
-            </a>
-          </div>
+            {/* Education */}
+            {profile.education && (
+              <div className="mb-8 p-4 bg-white rounded-lg shadow-md">
+                <p className="text-gray-700">
+                  <span className="font-semibold">{profile.education.degree}</span> at{' '}
+                  <span className="font-semibold">{profile.education.institution}</span>
+                  {' '}({profile.education.start_year} - {profile.education.status})
+                </p>
+              </div>
+            )}
 
-          {/* Social Links */}
-          <div className="flex items-center justify-center gap-6">
-            <a
-              href={profileData.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full border border-gray-700 hover:border-[#00D9FF] text-gray-400 hover:text-[#00D9FF] transition-all duration-300 hover:scale-110 hover:rotate-12"
-            >
-              <Github size={24} />
-            </a>
-            <a
-              href={profileData.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full border border-gray-700 hover:border-[#00FF88] text-gray-400 hover:text-[#00FF88] transition-all duration-300 hover:scale-110 hover:rotate-12"
-            >
-              <Linkedin size={24} />
-            </a>
-            <a
-              href={`mailto:${profileData.email}`}
-              className="p-3 rounded-full border border-gray-700 hover:border-[#FF6B6B] text-gray-400 hover:text-[#FF6B6B] transition-all duration-300 hover:scale-110 hover:rotate-12"
-            >
-              <Mail size={24} />
-            </a>
-            <a
-              href={profileData.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full border border-gray-700 hover:border-[#00D9FF] text-gray-400 hover:text-[#00D9FF] transition-all duration-300 hover:scale-110 hover:rotate-12"
-            >
-              <Code2 size={24} />
-            </a>
-          </div>
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              <a
+                href="#contact"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl flex items-center gap-2"
+              >
+                <Mail size={20} />
+                Get In Touch
+              </a>
+              <a
+                href="#projects"
+                className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg hover:shadow-xl border-2 border-blue-600"
+              >
+                View Projects
+              </a>
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <button
-        onClick={scrollToProjects}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer bg-transparent border-none"
-      >
-        <ArrowDown size={32} className="text-[#00D9FF]" />
-      </button>
     </section>
   );
 };
 
 export default Hero;
+
