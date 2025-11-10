@@ -168,6 +168,6 @@ export const experience = [
 export const stats = [
   { label: "Projects Completed", value: "12+", icon: "code" },
   { label: "GitHub Contributions", value: "44", icon: "git-commit" },
-  { label: "Technologies", value: "15+", icon: "layers" },
-  { label: "Coffee Consumed", value: "∞", icon: "coffee" }
+  { label: "Years of Experience", value: "2+", icon: "calendar" },
+  { label: "Technologies Mastered", value: "15+", icon: "layers" }
 ];
