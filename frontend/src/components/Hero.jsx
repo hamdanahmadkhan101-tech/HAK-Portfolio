@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Mail, MapPin, Calendar } from 'lucide-react';
+import { Mail, MapPin, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Hero = ({ profile }) => {

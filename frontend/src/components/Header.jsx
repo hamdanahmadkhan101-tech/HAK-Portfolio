@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Mail, Phone } from 'lucide-react';
+import { Menu, X, Github, Linkedin } from 'lucide-react';
 
 const Header = ({ profile }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
