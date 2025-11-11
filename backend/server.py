@@ -26,7 +26,20 @@ app = FastAPI(title="Hamdan's Portfolio API", version="1.0.0")
 @app.on_event("startup")
 async def startup_db_client():
     """Initialize database connection on startup"""
-    get_db()
+    try:
+        logger.info("🚀 Starting database connection...")
+        db = get_db()
+        # Test connection asynchronously
+        try:
+            await db.client.admin.command('ping')
+            logger.info("✅ Database connection verified on startup")
+        except Exception as e:
+            logger.warning(f"⚠️ Database ping failed on startup: {str(e)}")
+            logger.warning("⚠️ Server will continue, but database operations may fail")
+    except Exception as e:
+        logger.error(f"❌ CRITICAL: Failed to initialize database on startup: {str(e)}")
+        logger.error("❌ Server will start, but database operations will fail")
+        logger.error("❌ Please check MONGO_URL and DB_NAME environment variables")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -52,6 +65,34 @@ api_router.include_router(experience.router, tags=["Experience"])
 @app.get("/")
 async def health_check():
     return {"status": "healthy", "message": "Portfolio API is running"}
+
+# Database health check endpoint
+@app.get("/health/db")
+async def health_check_db():
+    """Check database connection health"""
+    from database import get_db, is_db_available
+    try:
+        db = get_db()
+        if db is None:
+            return {
+                "status": "unhealthy",
+                "database": "not_connected",
+                "message": "Database connection not initialized"
+            }
+        
+        # Test connection
+        await db.client.admin.command('ping')
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "message": "Database connection is working"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "database": "error",
+            "message": f"Database connection failed: {str(e)}"
+        }
 
 # Include the router in the main app
 app.include_router(api_router)

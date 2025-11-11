@@ -12,6 +12,7 @@ const Contact = ({ profile }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +29,7 @@ const Contact = ({ profile }) => {
     try {
       await portfolioAPI.submitContact(formData);
       setSubmitStatus('success');
+      setErrorMessage('');
       setFormData({ name: '', email: '', subject: '', message: '' });
       
       // Clear success message after 5 seconds
@@ -38,10 +40,18 @@ const Contact = ({ profile }) => {
       console.error('Error submitting contact form:', error);
       setSubmitStatus('error');
       
-      // Clear error message after 5 seconds
+      // Extract error message from response
+      const errorMsg = error.response?.data?.detail || 
+                       error.response?.data?.message || 
+                       error.message || 
+                       'Failed to send message. Please try again later.';
+      setErrorMessage(errorMsg);
+      
+      // Clear error message after 8 seconds
       setTimeout(() => {
         setSubmitStatus(null);
-      }, 5000);
+        setErrorMessage('');
+      }, 8000);
     } finally {
       setIsSubmitting(false);
     }
@@ -227,9 +237,14 @@ const Contact = ({ profile }) => {
               )}
 
               {submitStatus === 'error' && (
-                <div className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-lg">
-                  <AlertCircle size={20} />
-                  <span>Failed to send message. Please try again later.</span>
+                <div className="flex items-start gap-2 text-red-600 bg-red-50 p-4 rounded-lg">
+                  <AlertCircle size={20} className="mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-medium">Failed to send message</p>
+                    {errorMessage && (
+                      <p className="text-sm mt-1 opacity-90">{errorMessage}</p>
+                    )}
+                  </div>
                 </div>
               )}
 
