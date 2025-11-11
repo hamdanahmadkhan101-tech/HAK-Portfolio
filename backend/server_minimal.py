@@ -1,27 +1,15 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = FastAPI(title="Portfolio API", version="1.0.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 @app.get("/")
 async def root():
     return {"status": "healthy", "message": "Portfolio API is running"}
 
-@app.get("/api/")
-async def api_root():
-    return {"message": "API is working", "version": "1.0.0"}
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
 if __name__ == "__main__":
     import uvicorn
