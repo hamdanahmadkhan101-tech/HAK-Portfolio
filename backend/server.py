@@ -48,6 +48,11 @@ api_router.include_router(contact.router, tags=["Contact"])
 api_router.include_router(stats.router, tags=["Stats"])
 api_router.include_router(experience.router, tags=["Experience"])
 
+# Root endpoint for health checks
+@app.get("/")
+async def health_check():
+    return {"status": "healthy", "message": "Portfolio API is running"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
