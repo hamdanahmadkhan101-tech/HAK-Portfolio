@@ -7,13 +7,14 @@ import logging
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-# Get database instance
-db = get_db()
+# Database will be initialized per request
 
 @router.post("/contact", response_model=ContactMessage)
 async def submit_contact_form(message_data: ContactMessageCreate):
     """Submit contact form - saves to DB and sends email notification"""
     try:
+        # Get database instance
+        db = get_db()
         # Check for recent duplicate submissions (within last 5 minutes)
         from datetime import datetime, timedelta
         five_minutes_ago = datetime.utcnow() - timedelta(minutes=5)
@@ -72,6 +73,8 @@ async def submit_contact_form(message_data: ContactMessageCreate):
 async def get_contact_messages():
     """Get all contact messages (admin only - future)"""
     try:
+        # Get database instance
+        db = get_db()
         messages = await db.contact_messages.find().sort("created_at", -1).to_list(100)
         return messages
     except Exception as e:
